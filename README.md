@@ -1,2 +1,2 @@
 # sockback
-Advenced automatised server for socknet
+Advenced framework server for socknet
