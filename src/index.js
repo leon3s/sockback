@@ -101,15 +101,12 @@ class Sockback {
   }
 
   listen() {
-    this.socknet = Socknet({
-      port: this.server.get('port'),
-      http: this.server.start(this.server),
-    });
+    this.socknet = Socknet(this.server.start(this.server));
     this._linkDeps(this.socknet);
     this._initNamespaces();
     this._mountNamespaces();
     this._mountObservers();
-    this.socknet.listen(this.server.get('port'));
+    this.socknet.listen();
   }
 }
 

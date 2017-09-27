@@ -21,7 +21,7 @@
   "dependencies": {
     "loopback": "^3.9.0",
     "loopback-boot": "^2.26.0",
-    "socknet": "^1.0.21"
+    "socknet": "^1.0.24"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
