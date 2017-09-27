@@ -156,15 +156,12 @@ var Sockback = function () {
   }, {
     key: 'listen',
     value: function listen() {
-      this.socknet = (0, _socknet2.default)({
-        port: this.server.get('port'),
-        http: this.server.start(this.server)
-      });
+      this.socknet = (0, _socknet2.default)(this.server.start(this.server));
       this._linkDeps(this.socknet);
       this._initNamespaces();
       this._mountNamespaces();
       this._mountObservers();
-      this.socknet.listen(this.server.get('port'));
+      this.socknet.listen();
     }
   }]);
 

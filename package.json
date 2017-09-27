@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/leon3s/sockback#readme",
   "dependencies": {
-    "loopback": "^3.9.0",
-    "loopback-boot": "^2.26.0",
+    "loopback": "^3.13.0",
+    "loopback-boot": "^2.26.2",
     "socknet": "^1.0.24"
   },
   "devDependencies": {
