@@ -1,3 +1,13 @@
+/**
+ * @Author: leone <leone>
+ * @Date:   2018-01-30T22:40:49+01:00
+ * @Filename: index.js
+ * @Last modified by:   leone
+ * @Last modified time: 2018-01-30T22:41:22+01:00
+ */
+
+
+
 import fs from 'fs';
 import path from 'path';
 import Socknet from 'socknet';
@@ -50,7 +60,7 @@ class Sockback {
     if (!fs.lstatSync(observersDir).isDirectory()) return;
 
     readDirRecur(observersDir, {}, (filePath) => {
-      require(filePath).default(this);
+      require(filePath)(this);
     });
   }
 
@@ -66,7 +76,7 @@ class Sockback {
       if (this.server.models[modelName]) {
         const model = this.server.models[modelName];
         readDirRecur(filePath, {}, (filePath) => {
-          require(filePath).default(model);
+          require(filePath)(model);
         });
       };
     });
@@ -83,7 +93,7 @@ class Sockback {
       return console.error(`Warning: ${rootNamespaceDirectory} not found.`);
     readDirRecur(rootNamespaceDirectory, {}, (filePath) => {
       if (filePath.search('.js')) {
-        require(filePath).default(this.socknet);
+        require(filePath)(this.socknet);
       }
     });
     sync(this.socknet);
@@ -94,7 +104,7 @@ class Sockback {
       this._linkDeps(namespace);
       namespace.app = this;
       readDirRecur(namespaceDirectory, {}, (filePath) => {
-        require(filePath).default(namespace);
+        require(filePath)(namespace);
       });
       sync(namespace);
     });

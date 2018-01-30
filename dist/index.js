@@ -4,7 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @Author: leone <leone>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @Date:   2018-01-30T22:40:49+01:00
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @Filename: index.js
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @Last modified by:   leone
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @Last modified time: 2018-01-30T22:41:22+01:00
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 exports.default = function () {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
@@ -100,7 +106,7 @@ var Sockback = function () {
       if (!_fs2.default.lstatSync(observersDir).isDirectory()) return;
 
       (0, _readDirRecur2.default)(observersDir, {}, function (filePath) {
-        require(filePath).default(_this2);
+        require(filePath)(_this2);
       });
     }
   }, {
@@ -119,7 +125,7 @@ var Sockback = function () {
         if (_this3.server.models[modelName]) {
           var model = _this3.server.models[modelName];
           (0, _readDirRecur2.default)(filePath, {}, function (filePath) {
-            require(filePath).default(model);
+            require(filePath)(model);
           });
         };
       });
@@ -137,7 +143,7 @@ var Sockback = function () {
       if (!_fs2.default.lstatSync(rootNamespaceDirectory).isDirectory()) return console.error('Warning: ' + rootNamespaceDirectory + ' not found.');
       (0, _readDirRecur2.default)(rootNamespaceDirectory, {}, function (filePath) {
         if (filePath.search('.js')) {
-          require(filePath).default(_this4.socknet);
+          require(filePath)(_this4.socknet);
         }
       });
       (0, _sync2.default)(this.socknet);
@@ -148,7 +154,7 @@ var Sockback = function () {
         _this4._linkDeps(namespace);
         namespace.app = _this4;
         (0, _readDirRecur2.default)(namespaceDirectory, {}, function (filePath) {
-          require(filePath).default(namespace);
+          require(filePath)(namespace);
         });
         (0, _sync2.default)(namespace);
       });
