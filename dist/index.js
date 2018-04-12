@@ -8,8 +8,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * @Author: leone <leone>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * @Date:   2018-01-30T22:40:49+01:00
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * @Filename: index.js
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @Last modified by:   leone
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @Last modified time: 2018-01-30T22:41:22+01:00
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @Last modified by:   Leone
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @Last modified time: 2018-04-12T05:20:58+02:00
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 exports.default = function () {
@@ -48,6 +48,10 @@ var _readDirRecur = require('./utils/readDirRecur');
 
 var _readDirRecur2 = _interopRequireDefault(_readDirRecur);
 
+var _generateCRUD = require('./utils/generateCRUD');
+
+var _generateCRUD2 = _interopRequireDefault(_generateCRUD);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -59,12 +63,14 @@ var Sockback = function () {
     /**
     * @desc Directory where the server is running
     */
+    console.log('im loaded');
     this._directory = directory;
   }
 
   _createClass(Sockback, [{
     key: '_linkDeps',
     value: function _linkDeps(namespace) {
+      namespace.app = this.server;
       namespace.models = this.server.models;
       namespace.settings = this.server.settings;
       namespace.datasources = this.server.datasources;
@@ -138,7 +144,8 @@ var Sockback = function () {
       var namespacesDirectory = _path2.default.join(this._directory, './namespaces');
       var rootNamespaceDirectory = _path2.default.join(namespacesDirectory, './root');
 
-      this.socknet.app = this;
+      (0, _sync2.default)(this.socknet);
+      (0, _generateCRUD2.default)(this.socknet);
       if (!_fs2.default.lstatSync(namespacesDirectory).isDirectory()) return console.error('Warning: ' + namespacesDirectory + ' not found.');
       if (!_fs2.default.lstatSync(rootNamespaceDirectory).isDirectory()) return console.error('Warning: ' + rootNamespaceDirectory + ' not found.');
       (0, _readDirRecur2.default)(rootNamespaceDirectory, {}, function (filePath) {
@@ -146,17 +153,16 @@ var Sockback = function () {
           require(filePath)(_this4.socknet);
         }
       });
-      (0, _sync2.default)(this.socknet);
       Object.keys(this.socknet.namespaces).forEach(function (key) {
         var namespace = _this4.socknet.namespaces[key];
         var namespaceDirectory = _path2.default.join(namespacesDirectory, namespace.name);
 
+        (0, _sync2.default)(namespace);
+        (0, _generateCRUD2.default)(namespace);
         _this4._linkDeps(namespace);
-        namespace.app = _this4;
         (0, _readDirRecur2.default)(namespaceDirectory, {}, function (filePath) {
           require(filePath)(namespace);
         });
-        (0, _sync2.default)(namespace);
       });
     }
   }, {

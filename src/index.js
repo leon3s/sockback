@@ -2,11 +2,9 @@
  * @Author: leone <leone>
  * @Date:   2018-01-30T22:40:49+01:00
  * @Filename: index.js
- * @Last modified by:   leone
- * @Last modified time: 2018-01-30T22:41:22+01:00
+ * @Last modified by:   Leone
+ * @Last modified time: 2018-04-12T05:20:58+02:00
  */
-
-
 
 import fs from 'fs';
 import path from 'path';
@@ -16,6 +14,7 @@ import boot from 'loopback-boot';
 
 import sync from './utils/sync';
 import readDirRecur from './utils/readDirRecur';
+import generateCRUD from './utils/generateCRUD';
 
 class Sockback {
 
@@ -23,10 +22,12 @@ class Sockback {
     /**
     * @desc Directory where the server is running
     */
+    console.log('im loaded');
     this._directory = directory;
   }
 
   _linkDeps(namespace) {
+    namespace.app = this.server;
     namespace.models = this.server.models;
     namespace.settings = this.server.settings;
     namespace.datasources = this.server.datasources;
@@ -86,7 +87,8 @@ class Sockback {
     const namespacesDirectory = path.join(this._directory, './namespaces');
     const rootNamespaceDirectory = path.join(namespacesDirectory, './root');
 
-    this.socknet.app = this;
+    sync(this.socknet);
+    generateCRUD(this.socknet);
     if (!fs.lstatSync(namespacesDirectory).isDirectory())
       return console.error(`Warning: ${namespacesDirectory} not found.`);
     if (!fs.lstatSync(rootNamespaceDirectory).isDirectory())
@@ -96,17 +98,16 @@ class Sockback {
         require(filePath)(this.socknet);
       }
     });
-    sync(this.socknet);
     Object.keys(this.socknet.namespaces).forEach((key) => {
       const namespace = this.socknet.namespaces[key];
       const namespaceDirectory = path.join(namespacesDirectory, namespace.name);
 
+      sync(namespace);
+      generateCRUD(namespace);
       this._linkDeps(namespace);
-      namespace.app = this;
       readDirRecur(namespaceDirectory, {}, (filePath) => {
         require(filePath)(namespace);
       });
-      sync(namespace);
     });
   }
 
