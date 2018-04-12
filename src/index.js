@@ -3,7 +3,7 @@
  * @Date:   2018-01-30T22:40:49+01:00
  * @Filename: index.js
  * @Last modified by:   Leone
- * @Last modified time: 2018-04-12T05:20:58+02:00
+ * @Last modified time: 2018-04-12T06:04:01+02:00
  */
 
 import fs from 'fs';
@@ -22,7 +22,6 @@ class Sockback {
     /**
     * @desc Directory where the server is running
     */
-    console.log('im loaded');
     this._directory = directory;
   }
 
