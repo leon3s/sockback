@@ -1,6 +1,6 @@
 {
   "name": "sockback",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Advenced framework for socknet",
   "main": "lib/index.js",
   "scripts": {
